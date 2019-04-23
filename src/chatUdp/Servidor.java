@@ -43,13 +43,13 @@ public class Servidor extends Thread {
     public void run() {
         try {
 
-            DatagramSocket s = new DatagramSocket(1314);
+            DatagramSocket ds = new DatagramSocket(1314);
             System.out.println("Waiting for connection......");
 
             DatagramPacket received = new DatagramPacket(new byte[1024], 1024);
 
             while (true) {
-                s.receive(received);
+                ds.receive(received);
 
                 if (!portList.contains(received.getPort())) {
                     portList.add(received.getPort());
@@ -59,7 +59,7 @@ public class Servidor extends Thread {
                 for (int i = 0; i < portList.size(); i++) {
                     if (portList.get(i) != received.getPort()) {
                         DatagramPacket resp = new DatagramPacket(received.getData(), received.getLength(), addressList.get(i), portList.get(i));
-                        s.send(resp);
+                        ds.send(resp);
                     }
                 }
                 System.out.println();
